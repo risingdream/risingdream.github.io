@@ -28,10 +28,12 @@ Since 2021, I've been R&D Director at **Zenterprize**, leading product developme
 
 Some things I've shipped:
 
-- **[Bznav AI](https://ai.bznav.com)** — An AI-powered tax advisory agent. 700K MAU, built entirely on organic growth.
-- **[Bznav Refund](https://bznav.com/refund/tax)** — Korea's #1 corporate tax refund service. 2.5M businesses served. ₩900B in refunds identified.
+- **[Bznav Sena](https://ai.bznav.com)** — AI-powered tax advisory agent. 1.9M MAU, built entirely on organic growth.
+- **[Bznav Refund](https://bznav.com/refund/tax)** — Korea's #1 corporate tax refund service. 4M registered members. ₩900B in refunds identified.
 - **[Bznav Care](https://care.bznav.com)** — Automated bookkeeping and tax filing for small businesses.
-- **[1min](https://1min.bznav.com)** — Freelancer income tax filing in under a minute. 500K users.
+- **[1min](https://1min.bznav.com)** — Freelancer income tax filing service (Korea's largest in its category).
+
+Currently building **Bznav Foundation** — an AI Agent Platform that connects tax domain expertise with autonomous agents at scale.
 
 The company grew from ₩3B revenue in 2021 to ₩18B in 2024, reaching profitability. Series A (₩30B) → Series C (₩100B).
 
