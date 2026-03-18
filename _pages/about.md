@@ -4,14 +4,15 @@ permalink: /about/
 author_profile: true
 ---
 
-## Jason Jung
+CPA and R&D Director at [Zenterprize](https://bznav.com), building tax-tech products used by millions of Korean businesses.
 
-공인회계사이자 지엔터프라이즈 대표입니다.
+Previously at KDIC and Samjong KPMG. Passionate about turning complex financial domains into scalable digital products.
 
-세무, AI/기술, 자본시장에 관심이 많으며, 이 공간에서 공부하고 정리한 내용들을 나눕니다.
+### What I do
+- Tax-tech product development (PO + Full-stack)
+- AI-powered tax advisory systems
+- Data-driven business strategy
 
-### 전문 분야
-- 세무 / 조세 컨설팅
-- 세무 스타트업 / 핀테크
-- AI · 기술 트렌드
-- 자본시장 · 퀀트 투자
+### Credentials
+- CPA (KICPA)
+- CFA Level 3 Candidate
