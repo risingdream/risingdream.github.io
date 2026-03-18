@@ -1,6 +1,6 @@
 ---
 title: "Tax & Law"
-layout: posts
+layout: category
 permalink: /categories/tax-law/
 author_profile: true
 sidebar:

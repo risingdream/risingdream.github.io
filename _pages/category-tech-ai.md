@@ -1,6 +1,6 @@
 ---
 title: "Tech & AI"
-layout: posts
+layout: category
 permalink: /categories/tech-ai/
 author_profile: true
 taxonomy: Tech & AI

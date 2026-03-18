@@ -1,6 +1,6 @@
 ---
 title: "Notes"
-layout: posts
+layout: category
 permalink: /categories/notes/
 author_profile: true
 taxonomy: Notes

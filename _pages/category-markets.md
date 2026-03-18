@@ -1,6 +1,6 @@
 ---
 title: "Markets"
-layout: posts
+layout: category
 permalink: /categories/markets/
 author_profile: true
 taxonomy: Markets
