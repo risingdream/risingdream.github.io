@@ -42,9 +42,13 @@ If the existential threat to the tax agent profession is technological displacem
 
 CPAs.
 
-In recent years, the conflict between the Korean Tax Agent Association and the Korean Institute of CPAs has intensified sharply. The tax agent side has framed CPA encroachment into tax work as "occupational territory theft" and has pushed aggressively for legislative protections. The current head of the Tax Agent Association, Koo Jae-yi, has announced ambitions to expand the profession into government subsidy verification and public fund auditing — work that has traditionally been done by accounting firms.
+Here's where the narrative gets distorted. CPAs in Korea have always had the legal right to perform tax representation work. The recent amendments to the CPA Act don't expand CPA authority into new territory — they clarify and affirm rights that already existed. CPAs hold a broader, more rigorous credential: the CPA exam covers tax law, accounting, financial management, economics, and business administration. The tax agent exam focuses primarily on tax law and accounting. By any reasonable measure, the CPA is the higher-order license; the tax agent license has always been a narrower subset.
 
-The energy and resources that could go toward adapting to technological change are instead going into a territorial dispute with a fellow professional group.
+The Tax Agent Association has framed this clarification as "occupational territory theft" — as if CPAs are invading ground that belongs to tax agents. But this framing inverts the actual hierarchy. It's closer to arguing that a general practitioner is encroaching on a specialist's territory by treating patients — when the specialist's license was always the narrower one.
+
+The current head of the Tax Agent Association, Koo Jae-yi, has gone further: announcing ambitions to expand the profession into government subsidy verification and public fund auditing — work that accounting firms have traditionally handled. The association isn't just defending existing ground; it's pushing to claim territory it never occupied, while simultaneously calling CPA clarification an act of aggression.
+
+The energy and resources that could go toward adapting to technological change are instead going into manufacturing a territorial dispute with a fellow professional group.
 
 Why?
 
