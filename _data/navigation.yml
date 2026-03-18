@@ -1,0 +1,7 @@
+main:
+  - title: "글"
+    url: /
+  - title: "About"
+    url: /about/
+  - title: "카테고리"
+    url: /categories/
