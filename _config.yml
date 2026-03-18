@@ -1,6 +1,6 @@
 title: "Jason Jung"
 subtitle: "CPA · 지엔터프라이즈 대표"
-description: "세무, 기술, 그리고 생각들"
+description: "Tax, Tech, Markets, and Notes"
 url: "https://risingdream.github.io"
 baseurl: ""
 
@@ -9,12 +9,12 @@ baseurl: ""
 
 author:
   name: "Jason Jung"
-  bio: "공인회계사 | 지엔터프라이즈 대표"
+  bio: "CPA | CEO at Zenterprize"
   location: "Seoul, Korea"
 
 # 테마
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
-minimal_mistakes_skin: "default" # air, aqua, contrast, dark, dirt, neon, mint, plum, sunrise
+minimal_mistakes_skin: "default"
 
 # 플러그인
 plugins:
@@ -48,19 +48,12 @@ tag_archive:
   type: liquid
   path: /tags/
 
-# 한국어
-locale: "ko-KR"
+locale: "en"
 timezone: Asia/Seoul
 
-# 내비게이션
-header:
-  overlay_color: "#1a1a2e"
-
-# Sass
 sass:
   sass_dir: _sass
   style: compressed
 
-# 빌드
 markdown: kramdown
 highlighter: rouge

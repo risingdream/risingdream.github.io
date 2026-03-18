@@ -1,7 +1,13 @@
 main:
-  - title: "글"
+  - title: "Posts"
     url: /
+  - title: "Tax & Law"
+    url: /categories/tax-law/
+  - title: "Tech & AI"
+    url: /categories/tech-ai/
+  - title: "Markets"
+    url: /categories/markets/
+  - title: "Notes"
+    url: /categories/notes/
   - title: "About"
     url: /about/
-  - title: "카테고리"
-    url: /categories/
