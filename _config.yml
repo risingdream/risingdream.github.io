@@ -22,6 +22,8 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jekyll-gist
+  - jekyll-remote-theme
+  - jekyll-include-cache
 
 # 포스트 기본값
 defaults:
