@@ -31,7 +31,7 @@ Some things I've shipped:
 - **[Bznav Sena](https://ai.bznav.com)** — AI-powered tax advisory agent. 1.9M MAU, built entirely on organic growth.
 - **[Bznav Refund](https://bznav.com/refund/tax)** — Korea's #1 corporate tax refund service. 4M registered members. ₩900B in refunds identified.
 - **[Bznav Care](https://care.bznav.com)** — Automated bookkeeping and tax filing for small businesses.
-- **[1min](https://1min.bznav.com)** — Freelancer income tax filing service (Korea's largest in its category).
+- **[1min](https://1min.bznav.com)** — Freelancer income tax refund service, similar to Samjumsam (Korea's largest tax refund platform for individuals).
 
 Currently building **ZENT Foundation** — an AI Agent Platform that connects tax domain expertise with autonomous agents at scale.
 
