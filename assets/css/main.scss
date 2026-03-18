@@ -32,7 +32,22 @@ h1, h2, h3, h4, h5, h6 {
 // ─── Masthead ─────────────────────────────────────────────────
 .masthead {
   border-bottom: 1px solid #e8e8e8;
-  background: #fff;
+  background: #fff !important;
+}
+
+.masthead__inner-wrap {
+  background: #fff !important;
+}
+
+.greedy-nav {
+  background: #fff !important;
+}
+
+// Page header (title banner area)
+.page__hero,
+.page__hero--overlay {
+  background: #fff !important;
+  color: #111 !important;
 }
 
 .site-title {
