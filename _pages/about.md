@@ -12,17 +12,19 @@ Most accountants interpret the tax code. I've spent the last several years tryin
 
 ### The path here
 
-I started my career at Samjong KPMG — auditing large corporates, running M&A due diligence, learning how money actually moves through organizations. Good training. But I kept noticing the same thing: the most valuable financial knowledge was locked away from the people who needed it most.
+I started out studying engineering at ICU — now part of KAIST — before eventually landing in business. That early detour into tech never really left me. I've been writing code longer than I've been filing tax returns, which is an odd thing to say about a CPA, but here we are.
 
-I moved to KDIC (Korea Deposit Insurance Corporation), where I spent eight years investigating failed financial institutions and tracking down fraud. Along the way, I designed the legislation and systems behind Korea's **Wrongful Transfer Return Program** — a national policy now used by millions of people who accidentally send money to the wrong account.
+After graduating from Korea University, I joined Samjong KPMG — auditing large corporates, running M&A due diligence, learning how money actually flows through organizations. Good training. But I kept noticing the same thing: the most valuable financial knowledge was locked away from the people who needed it most.
 
-That experience taught me something: the gap between good policy and actual impact is almost always an execution problem. And execution, increasingly, means software.
+I moved to KDIC (Korea Deposit Insurance Corporation), where I spent eight years investigating failed financial institutions and tracking down fraud. Along the way, I designed the legislation and systems behind Korea's **Wrongful Transfer Return Program** — a national policy now used by millions of people who accidentally send money to the wrong account. Writing a law and then building the software to run it is a strange experience. I'd recommend it.
+
+That experience cemented something for me: the gap between good policy and real-world impact is almost always an execution problem. And execution, increasingly, means software.
 
 ---
 
 ### What I build
 
-Since 2021, I've been R&D Director at **Zenterprize**, where I lead product development for [Bznav](https://bznav.com) — Korea's leading tax-tech platform.
+Since 2021, I've been R&D Director at **Zenterprize**, leading product development for [Bznav](https://bznav.com) — Korea's leading tax-tech platform.
 
 Some things I've shipped:
 
@@ -31,9 +33,9 @@ Some things I've shipped:
 - **[Bznav Care](https://care.bznav.com)** — Automated bookkeeping and tax filing for small businesses.
 - **[1min](https://1min.bznav.com)** — Freelancer income tax filing in under a minute. 500K users.
 
-The company grew from ₩3B revenue in 2021 to ₩18B in 2024, reaching profitability. We went from Series A (₩30B) to Series C (₩100B) along the way.
+The company grew from ₩3B revenue in 2021 to ₩18B in 2024, reaching profitability. Series A (₩30B) → Series C (₩100B).
 
-I hold a patent for the **z-flux engine**, an Excel-to-API abstraction layer I built to connect non-technical tax domain knowledge directly to our infrastructure.
+I also hold a patent for the **z-flux engine** — an Excel-to-API layer I built so that non-technical tax domain knowledge could plug directly into our infrastructure without going through engineers every time.
 
 ---
 
@@ -41,9 +43,9 @@ I hold a patent for the **z-flux engine**, an Excel-to-API abstraction layer I b
 
 Tax is one of the most consequential but least understood parts of running a business. Most people overpay, underclaim, or just guess. I think software can close that gap — not by replacing accountants, but by making their expertise accessible at scale.
 
-I'm also interested in how AI changes the nature of knowledge work, what financial markets are actually pricing in at any given moment, and how complex regulatory domains get turned into products people actually use.
+Beyond work, I'm interested in how AI is reshaping knowledge work, what financial markets are pricing in at any given moment, and the engineering decisions that separate products that scale from ones that don't.
 
-This site is where I write down what I'm learning.
+I'm a workaholic who dreams of having more time to read, think, and do nothing in particular. This site is an attempt at the first two.
 
 ---
 
