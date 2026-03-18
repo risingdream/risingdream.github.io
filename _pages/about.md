@@ -33,7 +33,7 @@ Some things I've shipped:
 - **[Bznav Care](https://care.bznav.com)** — Automated bookkeeping and tax filing for small businesses.
 - **[1min](https://1min.bznav.com)** — Freelancer income tax filing service (Korea's largest in its category).
 
-Currently building **Bznav Foundation** — an AI Agent Platform that connects tax domain expertise with autonomous agents at scale.
+Currently building **ZENT Foundation** — an AI Agent Platform that connects tax domain expertise with autonomous agents at scale.
 
 The company grew from ₩3B revenue in 2021 to ₩18B in 2024, reaching profitability. Series A (₩30B) → Series C (₩100B).
 
