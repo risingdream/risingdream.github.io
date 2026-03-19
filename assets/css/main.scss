@@ -102,6 +102,45 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     color: #111;
   }
+
+  // ─── Code blocks (prevent double-shrink) ──────────────────
+  pre {
+    font-size: 1em;  // relative to .page__content, not double-reduced
+  }
+
+  code {
+    font-size: 0.95em;
+  }
+
+  pre code {
+    font-size: 1em;  // already sized by pre
+  }
+
+  // ─── Tables ───────────────────────────────────────────────
+  table {
+    font-size: 1em;
+    line-height: 1.7;
+    border-collapse: collapse;
+    width: 100%;
+
+    th {
+      font-weight: 600;
+      background: #f8f8f8;
+      padding: 0.6em 0.9em;
+      border-bottom: 2px solid #ddd;
+      text-align: left;
+    }
+
+    td {
+      padding: 0.55em 0.9em;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
 }
 
 // ─── Author sidebar ───────────────────────────────────────────
@@ -173,8 +212,7 @@ hr {
   margin: 2.5em 0;
 }
 
-// ─── Code ─────────────────────────────────────────────────────
+// ─── Code (global monospace font) ─────────────────────────────
 code, pre {
   font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
-  font-size: 0.85em;
 }
