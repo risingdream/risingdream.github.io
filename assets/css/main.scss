@@ -103,22 +103,15 @@ h1, h2, h3, h4, h5, h6 {
     color: #111;
   }
 
-  // ─── Code blocks (prevent double-shrink) ──────────────────
-  pre {
-    font-size: 1em;  // relative to .page__content, not double-reduced
+  // ─── Code & pre: match body text size ─────────────────────
+  code, pre, code *, pre * {
+    font-size: 1em !important;
+    line-height: 1.75;
   }
 
-  code {
-    font-size: 0.95em;
-  }
-
-  pre code {
-    font-size: 1em;  // already sized by pre
-  }
-
-  // ─── Tables ───────────────────────────────────────────────
+  // ─── Tables: match body text size ─────────────────────────
   table {
-    font-size: 1em;
+    font-size: 1em !important;
     line-height: 1.7;
     border-collapse: collapse;
     width: 100%;
