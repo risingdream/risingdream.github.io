@@ -1,5 +1,5 @@
 ---
-title: "유저별 AI 컨테이너를 Docker로 분리한 법: 지율(知律) 개발기"
+title: "How I Built Per-User AI Containers with Docker: The Jiyul Story"
 date: 2026-03-20
 categories:
   - Tech & AI
@@ -13,38 +13,38 @@ tags:
   - claude
 ---
 
-> Tauri 2 + Next.js + OpenClaw + Docker로 만든 AI 법률·세무 비서 앱
+> A legal & tax AI assistant built with Tauri 2 + Next.js + OpenClaw + Docker
 
 ---
 
-## 왜 만들었나
+## Why I Built This
 
-OpenClaw는 강력하다. 유저별 독립 워크스페이스, 페르소나 정의, 툴 연동, 메모리 — 개인 AI 에이전트로서 필요한 건 다 있다.
+OpenClaw is powerful. Per-user workspaces, persona definition, tool integration, memory — everything you need for a personal AI agent is already there.
 
-근데 이걸 **서비스로 팔려면** 얘기가 달라진다.
+But **productizing it is a different story**.
 
-세 가지가 부족했다.
+Three things were missing.
 
-**첫째, 엔터프라이즈 안정성.** 내 로컬에서 OpenClaw 띄우는 건 쉽다. 근데 모르는 유저 1000명이 동시에 쓴다면? 컨테이너가 죽으면 자동 복구되나? 리소스 폭주하면 제한이 걸리나? 유저 데이터가 격리되나? 이 질문들에 "네"라고 답할 수 있어야 서비스다.
+**First, enterprise-grade stability.** Running OpenClaw on my local machine is easy. But what happens when 1,000 strangers use it simultaneously? Does the container auto-recover when it crashes? Are resource limits enforced? Is user data properly isolated? You can only call something a "service" when you can answer "yes" to all of these.
 
-**둘째, 도메인 전문성.** 범용 AI는 법률·세무 질문에 절반만 맞는다. 세법 조항을 틀리거나, 최신 개정 내용을 모르거나, 엉뚱한 자신감으로 대답한다. 지율은 두 가지로 이 문제를 푼다. 하나는 `SOUL.md`로 주입하는 페르소나 — 법률·세무 전문가로서의 말투, 판단 기준, 한계 인식. 다른 하나는 **도메인 전문 스킬을 Docker 컨테이너에 read-only로 마운트**하는 방식이다. 세법 조문 요약, 판례 요지, 신고 기한 캘린더 같은 지식 베이스를 컨테이너 내부에 파일로 올려두고, AI가 이를 참조한다. 유저가 건드릴 수 없는 read-only 영역이라 **지식의 무결성이 보장**된다.
+**Second, domain expertise.** General-purpose AI gets legal and tax questions half right. It misquotes statutes, misses recent amendments, and answers with misplaced confidence. Jiyul solves this two ways. One is a persona injected via `SOUL.md` — a legal/tax professional's tone, judgment criteria, and awareness of its own limits. The other is **domain-specific skills mounted into each Docker container as read-only volumes**. Summaries of tax codes, key case rulings, filing deadlines — all living as files inside the container that the AI can reference. Since users can't touch the read-only layer, **the integrity of the knowledge base is guaranteed**.
 
-**셋째, 상품화 구조.** 유저 온보딩, 인증, 데이터 저장, 파일 첨부 — OpenClaw 자체엔 이런 프로덕트 레이어가 없다. 이걸 붙여야 "서비스"가 된다.
+**Third, a product layer.** User onboarding, authentication, data persistence, file attachments — OpenClaw doesn't have any of this. You have to build it to have a "service."
 
-**지율(知律)은 그 세 가지를 붙인 실험이다.**
+**Jiyul (知律) is the experiment of adding all three.**
 
-OpenClaw의 철학 — *유저마다 독립된 AI 환경, 지속되는 맥락, 커스터마이즈 가능한 페르소나* — 은 그대로 유지한다. 여기에 Docker 기반 컨테이너 격리로 엔터프라이즈 안정성을 얹고, 법률·세무 도메인 전문성을 `SOUL.md` 한 장과 read-only 스킬 볼륨으로 주입한다.
+OpenClaw's philosophy — *an isolated AI environment per user, persistent context, customizable persona* — stays intact. On top of that, I layered Docker-based container isolation for enterprise stability, and injected legal/tax domain expertise via `SOUL.md` and read-only skill volumes.
 
-결국 질문은 이거다: **"OpenClaw를 SaaS로 만들면 어떻게 생겼을까?"**
+The real question was this: **"What does OpenClaw look like as a SaaS?"**
 
-지율은 그 답의 첫 번째 버전이다.
+Jiyul is version one of that answer.
 
 ---
 
-## 전체 아키텍처
+## Architecture Overview
 
 ```
-Android App (Tauri 2 + Next.js)
+Mobile/Desktop App (Tauri 2 + Next.js)
         │
         │ HTTPS
         ▼
@@ -57,42 +57,41 @@ Container Manager (Python, port 19200)
    ▼         ▼        ▼
 Docker      Docker   ...
 Container   Container
-(유저 A)    (유저 B)
+(User A)    (User B)
 OpenClaw    OpenClaw
 Gateway     Gateway
 ```
 
-핵심은 **유저 1명 = Docker 컨테이너 1개**라는 원칙이다. 각 컨테이너 안에 OpenClaw Gateway가 뜨고, Claude Sonnet 4가 그 유저만을 위한 AI로 작동한다.
+The core principle: **one user = one Docker container**. Each container runs an OpenClaw Gateway, and Claude Sonnet 4 operates as a private AI for that user alone.
 
 ---
 
-## 1. 앱: Tauri 2 + Next.js
+## 1. The App: Tauri 2 + Next.js
 
-모바일 앱은 **Tauri 2**로 만들었다. React Native나 Flutter 대신 Tauri를 선택한 이유는 세 가지다.
+The app is built with **Tauri 2**. I chose it over React Native or Flutter for three reasons.
 
-**하나, 크로스플랫폼.** Tauri는 Android 하나가 아니다. 코드베이스 하나로 **iOS, Android, Windows, macOS, Linux, 웹**까지 커버된다. 지율을 앱으로만 묶어두지 않겠다는 전제가 있었기 때문에 Tauri는 자연스러운 선택이었다.
+**Cross-platform from day one.** Tauri isn't just Android. A single codebase targets **iOS, Android, Windows, macOS, Linux, and web**. Jiyul was never meant to be locked into one platform, so Tauri was the natural fit.
 
-**둘, Next.js 코드베이스 재활용.** 이미 Next.js로 UI를 만들고 있었다. Tauri는 그 위에 Rust 네이티브 레이어만 얹으면 된다. React Native처럼 새 패러다임을 배울 필요가 없다.
+**Reuse the Next.js codebase.** The UI was already in Next.js. Tauri just wraps it with a Rust native layer — no new paradigm to learn, unlike React Native.
 
-**셋, 성능.** Tauri는 Electron과 달리 Chromium을 번들하지 않는다. OS 내장 WebView를 그대로 쓰기 때문에 **앱 용량이 작고 메모리 효율이 높다**. 특히 모바일에서 체감 차이가 크다.
+**Performance.** Unlike Electron, Tauri doesn't bundle Chromium. It uses the OS's built-in WebView, which means **smaller app size and better memory efficiency** — especially noticeable on mobile.
 
 ```
-앱 프레임워크: Tauri 2 (Rust + OS 내장 WebView)
-UI: Next.js 14 (SSG 모드)
-언어: TypeScript + Kotlin/Swift + Rust
-타겟: Android / iOS / Desktop / Web — 단일 코드베이스
+Framework:  Tauri 2 (Rust + OS WebView)
+UI:         Next.js 14 (SSG mode)
+Languages:  TypeScript + Kotlin/Swift + Rust
+Targets:    Android / iOS / Desktop / Web — single codebase
 ```
 
-한 가지 함정이 있었다. **targetSdk 35+에서 edge-to-edge가 강제 적용**되면서 safe area 레이아웃이 깨지는 문제(Tauri #14142). 아직 미해결 이슈라 Android는 현재 targetSdk 34로 우회 중이다.
+One gotcha: **targetSdk 35+ forces edge-to-edge layout** on Android, breaking the safe area (Tauri #14142). Unresolved upstream issue — currently working around it with targetSdk 34.
 
 ---
 
-## 2. 인증: Firebase + Android CredentialManager
+## 2. Auth: Firebase + Android CredentialManager
 
-인증은 **Firebase Auth + Google Sign-In** 조합이다. 요즘 Android는 구버전 Google Sign-In SDK 대신 **CredentialManager API** 사용을 권장한다.
+Authentication is **Firebase Auth + Google Sign-In**. Modern Android recommends the **CredentialManager API** over the legacy Google Sign-In SDK.
 
 ```kotlin
-// Android 네이티브 CredentialManager
 val credentialManager = CredentialManager.create(context)
 val request = GetCredentialRequest(listOf(
     GetGoogleIdOption(serverClientId = WEB_CLIENT_ID, ...)
@@ -101,31 +100,30 @@ val result = credentialManager.getCredential(context, request)
 // → ID Token → Firebase signInWithCredential
 ```
 
-Firebase에서 UID를 받으면, 그때부터 모든 요청에 그 UID가 따라다닌다. 컨테이너 식별자 역할을 하는 것이다.
+Once Firebase hands back a UID, it tags every subsequent request. The UID doubles as the container identifier.
 
 ---
 
-## 3. Container Manager: 유저별 Docker 생명주기
+## 3. Container Manager: Per-User Docker Lifecycle
 
-아키텍처의 핵심은 Python으로 만든 **Container Manager**다. 포트 19200에서 HTTP 서버로 돌고, Firebase UID를 받아서 해당 유저의 Docker 컨테이너를 관리한다.
+The backbone of the architecture is a **Container Manager** written in Python. It runs as an HTTP server on port 19200, takes Firebase UIDs, and manages the Docker container lifecycle for each user.
 
-### API 구조
+### API
 
-| Method | Path | 역할 |
-|--------|------|------|
-| `POST` | `/ensure` | 컨테이너 생성/시작, 포트+토큰 반환 |
-| `POST` | `/proxy/{uid}/v1/*` | 해당 유저 컨테이너로 요청 프록시 |
-| `GET` | `/health` | 매니저 상태 확인 |
+| Method | Path | Purpose |
+|--------|------|---------|
+| `POST` | `/ensure` | Create/start container → return port + token |
+| `POST` | `/proxy/{uid}/v1/*` | Proxy request to user's container |
+| `GET` | `/health` | Manager health check |
 
-### 컨테이너 생명주기
+### Lifecycle
 
 ```python
-# /ensure 엔드포인트 핵심 로직 (의사 코드)
+# /ensure endpoint — pseudocode
 def ensure_container(uid, email, display_name):
     container_name = f"jiyul-{uid[:8]}"
 
     if not container_exists(container_name):
-        # 최초 생성: 워크스페이스 + 스킬 볼륨 마운트
         docker.run(
             image="jiyul-openclaw:latest",
             name=container_name,
@@ -141,36 +139,36 @@ def ensure_container(uid, email, display_name):
 
     elif is_stopped(container_name):
         docker.start(container_name)
-        time.sleep(5)  # Gateway 기동 대기
+        time.sleep(5)  # wait for Gateway to boot
 
     return {"port": get_port(container_name), "token": get_token(uid)}
 ```
 
-**idle 30분이 지나면 자동 stop**한다. 5분마다 체크 루프가 돌면서 마지막 요청 시각을 확인한다. 다음 요청이 오면 `/ensure`가 자동으로 다시 start시킨다. 서버 재부팅 시엔 `--restart unless-stopped` 덕분에 자동 복구된다.
+**Containers auto-stop after 30 minutes of idle.** A check loop runs every 5 minutes. The next request triggers `/ensure`, which starts the container back up. `--restart unless-stopped` handles server reboots automatically.
 
-이 구조 덕분에 유저가 늘어나도 **실제로 활성화된 컨테이너만 리소스를 쓴다**.
+This means **only active containers consume resources**, regardless of how many users are registered.
 
 ---
 
-## 4. 컨테이너 내부: 유저 데이터 vs 도메인 지식 분리
+## 4. Inside the Container: User Data vs. Domain Knowledge
 
-각 Docker 컨테이너 안에는 **OpenClaw Gateway**가 떠있다. OpenAI API 호환 인터페이스를 제공하면서, 내부에서 Claude Sonnet 4를 호출한다.
+Each Docker container runs an **OpenClaw Gateway** — an OpenAI-compatible API interface that routes to Claude Sonnet 4 under the hood.
 
-볼륨은 목적에 따라 두 개로 분리된다.
+Volumes are split by purpose:
 
 ```
 /home/jiyul/
-├── workspace/              # 유저별 퍼시스턴트 볼륨 (read-write)
-│   ├── SOUL.md            # 지율이 페르소나 정의
-│   ├── IDENTITY.md        # 지율이 정체성
-│   ├── AGENTS.md          # 에이전트 설정
-│   └── USER.md            # 유저 정보 (자동 생성)
-├── skills/                 # 도메인 전문 스킬 (read-only 마운트)
-│   ├── tax-law/           # 세법 조문 요약, 신고 기한, 개정 이력
-│   ├── civil-law/         # 민법·상법 핵심 조항
-│   └── case-references/   # 주요 판례 요지
+├── workspace/              # per-user persistent volume (read-write)
+│   ├── SOUL.md            # Jiyul's persona definition
+│   ├── IDENTITY.md        # Jiyul's identity
+│   ├── AGENTS.md          # agent configuration
+│   └── USER.md            # user info (auto-generated)
+├── skills/                 # domain expertise (read-only mount)
+│   ├── tax-law/           # tax code summaries, deadlines, amendment history
+│   ├── civil-law/         # key civil/commercial law provisions
+│   └── case-references/   # key case rulings
 └── .openclaw-jiyul/
-    └── openclaw.json      # Gateway 설정 + API 키
+    └── openclaw.json      # Gateway config + API key
 ```
 
 ```bash
@@ -181,28 +179,28 @@ docker run \
   jiyul-openclaw:latest
 ```
 
-**유저 데이터(workspace/)는 read-write, 도메인 지식(skills/)은 read-only.** 이 분리가 핵심이다.
+**User data (workspace/) is read-write. Domain knowledge (skills/) is read-only.** That separation is the point.
 
-법 개정이나 판례 업데이트가 생기면 **컨테이너를 재빌드하지 않고 호스트의 `skills/` 파일만 수정**하면 된다. 모든 유저 컨테이너에 즉시 반영된다. 유저가 skills 디렉토리를 수정하거나 삭제할 수 없으니 **지식 베이스의 무결성도 보장**된다.
-
----
-
-## 5. 파일 첨부: Cloudflare R2 Workers
-
-계약서 PDF나 이미지를 첨부할 때는 **Cloudflare R2 + Workers**를 쓴다.
-
-```
-앱 → POST /upload (Worker) → R2 저장 → URL 반환
-앱 → GET /files/:key (Worker) → R2 서빙
-```
-
-Workers가 중간에서 인증을 처리하고, R2에 파일을 올린다. CDN 엣지에서 서빙되니까 속도도 빠르다. 주의할 점은 **R2 TTL 설정을 Cloudflare 대시보드에서 수동으로 해줘야** 한다는 것 — lifecycle rule이 자동 적용되지 않는다.
+When the tax code changes or a new ruling drops, I update files in `skills/` on the host — **no container rebuild needed, changes propagate instantly to every user**. And since users can't modify or delete the skills directory, the knowledge base stays intact.
 
 ---
 
-## 6. Cloudflare Tunnel: 포트 열지 않는 배포
+## 5. File Attachments: Cloudflare R2 Workers
 
-서버 포트를 외부에 직접 노출하는 대신 **Cloudflare Tunnel**을 쓴다.
+Contract PDFs and images go through **Cloudflare R2 + Workers**.
+
+```
+App → POST /upload (Worker) → store in R2 → return URL
+App → GET /files/:key (Worker) → serve from R2
+```
+
+The Worker handles auth in the middle. Files are served from CDN edge nodes, so latency is low. One thing to watch: **R2 TTL isn't automatic** — you need to set lifecycle rules manually in the Cloudflare dashboard.
+
+---
+
+## 6. Cloudflare Tunnel: Deploy Without Opening Ports
+
+Instead of exposing the server port directly, I use **Cloudflare Tunnel**.
 
 ```yaml
 # config-jiyul.yml
@@ -212,16 +210,15 @@ ingress:
     service: http://localhost:19200
 ```
 
-방화벽 인바운드 규칙 없이, `cloudflared`가 Cloudflare 엣지로 아웃바운드 터널을 뚫는다. `@reboot` 크론탭으로 서버 재시작 시 자동 복구된다. DDoS 방어, SSL 종료, CDN이 덤으로 따라온다.
+No inbound firewall rules. `cloudflared` punches an outbound tunnel to the Cloudflare edge. A `@reboot` crontab entry handles restarts. DDoS protection, SSL termination, and CDN come along for free.
 
 ---
 
-## 7. 대화 저장: Firestore
+## 7. Conversation Storage: Firestore
 
-대화 히스토리는 컨테이너가 아니라 **Firestore**에 저장한다. 컨테이너가 stop됐다가 다시 start돼도 대화가 복원되는 이유다.
+Conversation history lives in **Firestore**, not in the container. That's why conversations survive container stop/start cycles.
 
 ```
-Firestore 구조:
 conversations/{uid}/
   messages/{messageId}
     role: "user" | "assistant"
@@ -229,53 +226,53 @@ conversations/{uid}/
     timestamp: ...
 ```
 
-보안 규칙으로 본인 UID의 데이터만 읽고 쓸 수 있도록 잠가뒀다.
+Security rules lock each user's data to their own UID.
 
 ---
 
-## 기술 스택 요약
+## Stack Summary
 
-| 영역 | 기술 |
-|------|------|
-| 앱 프레임워크 | Tauri 2 + Next.js 14 (SSG) |
-| 언어 | TypeScript, Kotlin/Swift, Rust |
-| 인증 | Firebase Auth + Android CredentialManager |
-| DB | Firestore |
+| Layer | Technology |
+|-------|------------|
+| App framework | Tauri 2 + Next.js 14 (SSG) |
+| Languages | TypeScript, Kotlin/Swift, Rust |
+| Auth | Firebase Auth + Android CredentialManager |
+| Database | Firestore |
 | AI | OpenClaw + Claude Sonnet 4 |
-| 컨테이너 | Docker (node:22-slim) |
-| 도메인 지식 | read-only 볼륨 마운트 (skills/) |
-| CDN/터널 | Cloudflare Tunnel + R2 Workers |
-| 도메인 | api.tax-insight.kr |
+| Containers | Docker (node:22-slim) |
+| Domain knowledge | read-only volume mount (skills/) |
+| CDN / Tunnel | Cloudflare Tunnel + R2 Workers |
+| Domain | api.tax-insight.kr |
 
 ---
 
-## 배운 것들
+## What I Learned
 
-**1. Tauri는 아직 Android에서 엣지 케이스가 많다.**
-targetSdk 이슈처럼 upstream이 해결 안 된 버그가 있다. 웹뷰 기반 앱의 숙명이다.
+**1. Tauri still has edge cases on Android.**
+The targetSdk issue is a good example — upstream bugs you can't fix. The tradeoff of WebView-based apps.
 
-**2. 유저별 컨테이너 분리는 생각보다 단순하다.**
-복잡해 보이지만 Container Manager 로직은 200줄 남짓이다. idle stop + on-demand start 패턴이 비용 효율도 좋다.
+**2. Per-user container isolation is simpler than it looks.**
+The Container Manager is around 200 lines. The idle stop + on-demand start pattern keeps costs surprisingly manageable.
 
-**3. read-only 볼륨이 도메인 AI의 신뢰성을 만든다.**
-유저 데이터와 지식 베이스를 분리하면, 지식 업데이트는 빠르게, 유저 데이터는 안전하게 관리할 수 있다. 컨테이너 재빌드 없이 세법 개정 반영이 가능하다.
+**3. Read-only volumes are what make domain AI trustworthy.**
+Separating user data from the knowledge base means you can update knowledge fast without touching user data. No container rebuild for a tax code amendment.
 
-**4. Cloudflare Tunnel은 소규모 배포의 치트키다.**
-포트 포워딩, SSL 인증서, DDoS 방어를 한 방에 해결한다. 무료 플랜으로도 충분하다.
+**4. Cloudflare Tunnel is a cheat code for small deployments.**
+Port forwarding, SSL certificates, DDoS protection — solved in one config file. The free tier is enough.
 
-**5. 페르소나는 파일로 관리하라.**
-`SOUL.md` 하나로 AI의 성격, 전문 분야, 말투를 정의한다. 코드 변경 없이 텍스트 파일만 수정하면 된다.
-
----
-
-## 마치며
-
-지율은 아직 초기다. 현재 소수 유저로 조용히 테스트 중이다. 앞으로 법률 문서 분석, 판례 검색 연동, 세무 신고 보조 기능을 붙여나갈 예정이다.
-
-이 프로젝트에서 가장 중요하게 생각한 건 기술 스택이 아니다. **"도메인 전문 AI를 어떻게 안전하게 격리하고, 지식을 신뢰할 수 있게 관리할 것인가"** — 이 질문에 대한 구조적 답이었다.
-
-유저 데이터는 read-write로 개인화하고, 도메인 지식은 read-only로 무결성을 지킨다. 이 단순한 원칙이 엔터프라이즈 AI 서비스의 출발점이 될 수 있다고 생각한다.
+**5. Manage persona as a file.**
+One `SOUL.md` defines the AI's personality, domain scope, and tone. Change the text file, no code change needed.
 
 ---
 
-*지율(知律) | AI 법률·세무 비서 | tax-insight.kr*
+## Closing
+
+Jiyul is still early. A small group of users is quietly testing it now. Next up: legal document analysis, case law search integration, and tax filing assistance.
+
+The technology stack wasn't the hard part. The real question was: **"How do you isolate a domain-specialized AI safely, and manage its knowledge in a way you can actually trust?"**
+
+User data as read-write for personalization. Domain knowledge as read-only for integrity. That simple principle might be the right starting point for enterprise AI services.
+
+---
+
+*Jiyul (知律) | AI Legal & Tax Assistant | tax-insight.kr*
