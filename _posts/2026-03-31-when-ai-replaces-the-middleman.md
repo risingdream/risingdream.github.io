@@ -65,4 +65,4 @@ The businesses that thrive in this shift won't be the ones with the biggest netw
 
 ---
 
-*Jason Jung is R&D Director at Z-Enterprise and a CPA. He writes about the intersection of AI, professional services, and capital markets.*
+*Jason Jung is R&D Director at Zenterprise and a CPA. He writes about the intersection of AI, professional services, and capital markets.*
