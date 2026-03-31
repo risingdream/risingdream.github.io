@@ -24,7 +24,7 @@ That experience cemented something for me: the gap between good policy and real-
 
 ### What I build
 
-Since 2021, I've been R&D Director at **Zenterprize**, leading product development for [Bznav](https://bznav.com) — Korea's leading tax-tech platform.
+Since 2021, I've been R&D Director at **Zenterprise**, leading product development for [Bznav](https://bznav.com) — Korea's leading tax-tech platform.
 
 Some things I've shipped:
 
