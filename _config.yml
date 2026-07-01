@@ -50,6 +50,12 @@ tag_archive:
 locale: "en"
 timezone: Asia/Seoul
 
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-4SJ8TWXM46"
+    anonymize_ip: false
+
 include:
   - _pages
 
