@@ -70,6 +70,24 @@ This gets more dangerous as agents become more capable. A weak agent fails early
 
 Capability increases both leverage and blast radius.
 
+## AI is not a genie
+
+Many people still treat an AI agent like a magic wand, or the genie in a lamp. State the wish clearly enough, and the desired result should appear.
+
+Sometimes it does. That stroke of luck is part of what makes the idea so tempting.
+
+More often, especially in business, the agent produces something that looks right while leaving out something that matters. The document is polished. The logic seems coherent. The recommendations sound specific. Yet a critical constraint, a piece of local context, or an operational consequence is missing.
+
+An obviously bad result is easy to reject. A plausible but incomplete result is much more dangerous.
+
+Its surface quality makes the weakness harder to find. Only when someone follows the work into the details do the gaps begin to appear. A source was never checked. An exception was ignored. A conclusion rests on an assumption nobody approved. A recommendation cannot survive contact with the actual process.
+
+By then, the output may already have shaped a decision, reached a customer, or become the foundation for more work.
+
+Working with an agent this way can feel like working with a convincing liar. Not because the agent intends to deceive, but because it can deliver confidence without carrying any of the consequences.
+
+The cleanup is not the agent's responsibility. Accountability is not the agent's responsibility. Both remain with the person and the organization that delegated the work.
+
 That is why a detailed prompt is not enough. An agent needs the structure of the work.
 
 What information can it trust? What result must it produce? How is completion verified? Which tools can it use? What requires approval? When should it retry, stop, or hand the task back to a person?
